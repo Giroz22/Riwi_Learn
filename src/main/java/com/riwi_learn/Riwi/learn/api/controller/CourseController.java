@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class CourseController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<CourseResponse> findById(@RequestParam String id){
+    public ResponseEntity<CourseResponse> findById(@PathVariable String id){
         return ResponseEntity.ok().body(this.courseService.getById(id));
     }
 
@@ -49,12 +50,12 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseResponse> update(@RequestParam String id, @RequestBody CourseUpdateRequest request){
+    public ResponseEntity<CourseResponse> update(@PathVariable String id, @RequestBody CourseUpdateRequest request){
         return ResponseEntity.ok().body(this.courseService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseResponse> delete(@RequestParam String id){
+    public ResponseEntity<CourseResponse> delete(@PathVariable String id){
         this.courseService.delete(id);
         return ResponseEntity.noContent().build();
     }
