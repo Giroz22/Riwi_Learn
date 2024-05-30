@@ -15,7 +15,8 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Message;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
 import com.riwi_learn.Riwi.learn.domain.repositories.UserRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IUserService;
-import com.riwi_learn.Riwi.learn.infrastructure.helpers.DtoConverters.UserConvert;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -24,7 +25,10 @@ import lombok.AllArgsConstructor;
 public class UserService implements IUserService{
 
     @Autowired
-    public final UserConvert dtoConverter;
+    public final UserMapper dtoConverter;
+
+    @Autowired
+    public final Mapper mapper;
 
     @Autowired
     private final UserRepository userRepository;
@@ -35,14 +39,14 @@ public class UserService implements IUserService{
 
         PageRequest  pagination = PageRequest.of(page, size);
 
-        return this.userRepository.findAll(pagination).map(entity -> dtoConverter.EntityToResponse(entity));
+        return this.userRepository.findAll(pagination).map(entity -> this.mapper.userToResponse(entity));
     }
 
     @Override
     public UserResponse getById(String id) {
         User user = this.userRepository.findById(id).orElse(null);
 
-        UserResponse userResponse = this.dtoConverter.EntityToResponse(user);
+        UserResponse userResponse = mapper.userToResponse(user);
         return userResponse;
     }
 
@@ -60,7 +64,7 @@ public class UserService implements IUserService{
         User newUser = this.userRepository.save(user);
 
         //Convertimos el usuario a un response
-        UserResponse userResponse = this.dtoConverter.EntityToResponse(newUser);
+        UserResponse userResponse = this.mapper.userToResponse(newUser);
 
         //Retornamos el valor
         return userResponse;
@@ -77,7 +81,7 @@ public class UserService implements IUserService{
         User userUpdated = this.userRepository.save(userUpdate);
 
         //Convertir a respueste el objeto
-        UserResponse userResponse = this.dtoConverter.EntityToResponse(userUpdated);
+        UserResponse userResponse = this.mapper.userToResponse(userUpdated);
         return userResponse;
     }
 
@@ -89,4 +93,5 @@ public class UserService implements IUserService{
         //Eliminamos        
         this.userRepository.delete(user);        
     }
+
 }

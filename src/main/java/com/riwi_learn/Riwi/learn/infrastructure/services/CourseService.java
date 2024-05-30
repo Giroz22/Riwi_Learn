@@ -13,7 +13,8 @@ import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ICourseService;
-import com.riwi_learn.Riwi.learn.infrastructure.helpers.DtoConverters.CourseConvert;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
 
 import lombok.AllArgsConstructor;
 
@@ -25,21 +26,24 @@ public class CourseService implements ICourseService{
     private CourseRepository courseRepository;
 
     @Autowired
-    private CourseConvert courseConvert;
+    private Mapper mapper;
+
+    @Autowired
+    private CourseMapper courseConvert;
 
     @Override
     public Page<CourseResponse> getAll(int page, int size) {
         if(page < 0 ) page = 0;
         PageRequest pagination = PageRequest.of(page, size);
 
-        return courseRepository.findAll(pagination).map(course ->  this.courseConvert.EntityToResponse(course));
+        return courseRepository.findAll(pagination).map(course ->  this.mapper.courseToResponse(course));
     }
 
     @Override
     public CourseResponse getById(String id) {
         Course course = this.courseRepository.findById(id).orElse(null);
 
-        return this.courseConvert.EntityToResponse(course);
+        return this.mapper.courseToResponse(course);
     }
 
     @Override
@@ -51,7 +55,7 @@ public class CourseService implements ICourseService{
         
         Course courseSaved = this.courseRepository.save(course);
 
-        return this.courseConvert.EntityToResponse(courseSaved);
+        return this.mapper.courseToResponse(courseSaved);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class CourseService implements ICourseService{
 
         Course courseUpdated = this.courseRepository.save(courseUpdate);
 
-        return this.courseConvert.EntityToResponse(courseUpdated);
+        return this.mapper.courseToResponse(courseUpdated);
     }
 
     @Override

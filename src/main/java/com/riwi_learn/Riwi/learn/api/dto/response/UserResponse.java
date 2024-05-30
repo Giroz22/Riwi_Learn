@@ -16,11 +16,8 @@ import lombok.NoArgsConstructor;
 public class UserResponse {
     private String id;
     private String username;
-    private String password;
     private String email;
     private String full_name;
     private UserRole role;
-    private List<CourseResponse> courses;
-    private List<MessageResponse> messagesSent;
-    private List<MessageResponse> messagesReceived;
+    private List<CourseToUserResponse> courses;
 }

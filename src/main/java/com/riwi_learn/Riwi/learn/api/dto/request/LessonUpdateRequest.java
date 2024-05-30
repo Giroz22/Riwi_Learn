@@ -1,7 +1,5 @@
 package com.riwi_learn.Riwi.learn.api.dto.request;
 
-import com.riwi_learn.Riwi.learn.domain.entitties.Course;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class LessonUpdateRequest {
-    private String title;
+    private String lesson_title;
     private String content;
-    private Course course;
 }
