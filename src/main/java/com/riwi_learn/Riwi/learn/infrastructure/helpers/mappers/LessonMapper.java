@@ -14,9 +14,11 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Component
 @AllArgsConstructor
+@NoArgsConstructor
 public class LessonMapper {
 
     @Autowired

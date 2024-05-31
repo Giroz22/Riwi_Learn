@@ -1,6 +1,7 @@
 package com.riwi_learn.Riwi.learn.infrastructure.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
+import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ICourseService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
@@ -70,6 +73,13 @@ public class CourseService implements ICourseService{
         Course courseDelete = this.courseRepository.findById(id).orElse(null);
 
         this.courseRepository.delete(courseDelete);
+    }
+
+    public List<LessonBaseResponse> getLessons(String id){
+
+        List<Lesson> lessons = this.courseRepository.findById(id).orElse(null).getLesson();
+
+        return this.courseMapper.listLessonToResponse(lessons);
     }
 
 }

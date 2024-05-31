@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
-import com.riwi_learn.Riwi.learn.api.dto.response.CourseToUserResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
 
@@ -36,9 +35,6 @@ public class UserMapper{
         UserResponse response = new UserResponse();
 
         BeanUtils.copyProperties(entity, response);
-
-        //Pasar la lista de cursos y mensajes a dto...
-        response.setCourses((entity.getCourses().stream().map((course)-> Mapper.sourceToTarget(course, new CourseToUserResponse()) )).toList());
 
         return response;
     }

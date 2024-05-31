@@ -15,5 +15,5 @@ public class CourseToUserResponse {
     private String id;
     private String name;
     private String description;
-    private List<LessonToCourseResponse> lesson;
+    private List<LessonResponse> lessons;
 }
