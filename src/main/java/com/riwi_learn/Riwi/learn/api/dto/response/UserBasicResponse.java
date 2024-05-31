@@ -1,6 +1,6 @@
 package com.riwi_learn.Riwi.learn.api.dto.response;
 
-import java.util.List;
+import com.riwi_learn.Riwi.learn.util.enums.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class LessonToCourseResponse {
+public class UserBasicResponse {
     private String id;
-    private String title;
-    private String content;
-    private List<AssigmentResponse> assigments;
+    private String username;
+    private String email;
+    private String full_name;
+    private UserRole role;
 }

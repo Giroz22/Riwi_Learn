@@ -14,7 +14,6 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ICourseService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
-import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
 
 import lombok.AllArgsConstructor;
 
@@ -26,47 +25,44 @@ public class CourseService implements ICourseService{
     private CourseRepository courseRepository;
 
     @Autowired
-    private Mapper mapper;
-
-    @Autowired
-    private CourseMapper courseConvert;
+    private CourseMapper courseMapper;
 
     @Override
     public Page<CourseResponse> getAll(int page, int size) {
         if(page < 0 ) page = 0;
         PageRequest pagination = PageRequest.of(page, size);
 
-        return courseRepository.findAll(pagination).map(course ->  this.mapper.courseToResponse(course));
+        return courseRepository.findAll(pagination).map(course ->  this.courseMapper.courseToResponse(course));
     }
 
     @Override
     public CourseResponse getById(String id) {
         Course course = this.courseRepository.findById(id).orElse(null);
 
-        return this.mapper.courseToResponse(course);
+        return this.courseMapper.courseToResponse(course);
     }
 
     @Override
     public CourseResponse create(CourseCreateRequest request) {
-        Course course = this.courseConvert.requestCreateToEntity(request, new Course());
+        Course course = this.courseMapper.requestCreateToEntity(request, new Course());
 
         course.setLesson(new ArrayList<>());
         course.setMessages(new ArrayList<>());
         
         Course courseSaved = this.courseRepository.save(course);
 
-        return this.mapper.courseToResponse(courseSaved);
+        return this.courseMapper.courseToResponse(courseSaved);
     }
 
     @Override
     public CourseResponse update(String id, CourseUpdateRequest request) {
         Course course = this.courseRepository.findById(id).orElse(null);
 
-        Course courseUpdate = this.courseConvert.requestUpdateToEntity(request, course);
+        Course courseUpdate = this.courseMapper.requestUpdateToEntity(request, course);
 
         Course courseUpdated = this.courseRepository.save(courseUpdate);
 
-        return this.mapper.courseToResponse(courseUpdated);
+        return this.courseMapper.courseToResponse(courseUpdated);
     }
 
     @Override

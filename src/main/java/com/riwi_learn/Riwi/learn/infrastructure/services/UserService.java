@@ -15,7 +15,6 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Message;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
 import com.riwi_learn.Riwi.learn.domain.repositories.UserRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IUserService;
-import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
 
 import lombok.AllArgsConstructor;
@@ -25,10 +24,7 @@ import lombok.AllArgsConstructor;
 public class UserService implements IUserService{
 
     @Autowired
-    public final UserMapper dtoConverter;
-
-    @Autowired
-    public final Mapper mapper;
+    public final UserMapper UserMapper;
 
     @Autowired
     private final UserRepository userRepository;
@@ -39,14 +35,14 @@ public class UserService implements IUserService{
 
         PageRequest  pagination = PageRequest.of(page, size);
 
-        return this.userRepository.findAll(pagination).map(entity -> this.mapper.userToResponse(entity));
+        return this.userRepository.findAll(pagination).map(entity -> this.UserMapper.userToResponse(entity));
     }
 
     @Override
     public UserResponse getById(String id) {
         User user = this.userRepository.findById(id).orElse(null);
 
-        UserResponse userResponse = mapper.userToResponse(user);
+        UserResponse userResponse = UserMapper.userToResponse(user);
         return userResponse;
     }
 
@@ -54,7 +50,7 @@ public class UserService implements IUserService{
     public UserResponse create(UserCreateRequest request) {
 
         //Obtenemos la info del request
-        User user = dtoConverter.requestCreateToEntity(request, new User());  
+        User user = UserMapper.requestCreateToEntity(request, new User());  
         // Agregamos algunos valor por defecto
         user.setCourses(new ArrayList<Course>());
         user.setMessagesSent(new ArrayList<Message>());
@@ -64,7 +60,7 @@ public class UserService implements IUserService{
         User newUser = this.userRepository.save(user);
 
         //Convertimos el usuario a un response
-        UserResponse userResponse = this.mapper.userToResponse(newUser);
+        UserResponse userResponse = this.UserMapper.userToResponse(newUser);
 
         //Retornamos el valor
         return userResponse;
@@ -75,13 +71,13 @@ public class UserService implements IUserService{
         User user = this.userRepository.findById(id).orElse(null);
 
         //Convertir los datos
-        User userUpdate = this.dtoConverter.requestUpdateToEntity(request, user);
+        User userUpdate = this.UserMapper.requestUpdateToEntity(request, user);
 
         //Guardar
         User userUpdated = this.userRepository.save(userUpdate);
 
         //Convertir a respueste el objeto
-        UserResponse userResponse = this.mapper.userToResponse(userUpdated);
+        UserResponse userResponse = this.UserMapper.userToResponse(userUpdated);
         return userResponse;
     }
 

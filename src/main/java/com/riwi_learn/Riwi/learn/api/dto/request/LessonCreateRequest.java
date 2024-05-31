@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class LessonCreateRequest {
-    private String lesson_title;
+    private String title;
     private String content;
     private String course_id;
 }

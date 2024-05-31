@@ -1,5 +1,7 @@
 package com.riwi_learn.Riwi.learn.infrastructure.services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,11 +10,11 @@ import org.springframework.stereotype.Service;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonResponse;
+import com.riwi_learn.Riwi.learn.domain.entitties.Assigment;
 import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.repositories.LessonRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ILessonService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.LessonMapper;
-import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
 
 import lombok.AllArgsConstructor;
 
@@ -24,9 +26,6 @@ public class LessonService implements ILessonService{
     LessonRepository lessonRepository;
 
     @Autowired
-    Mapper mapper;
-
-    @Autowired
     LessonMapper lessonMapper;
 
     @Override
@@ -35,24 +34,25 @@ public class LessonService implements ILessonService{
         PageRequest pagination = PageRequest.of(page, size);
         
 
-        return this.lessonRepository.findAll(pagination).map((Lesson lesson) -> this.mapper.lessonToResponse(lesson));
+        return this.lessonRepository.findAll(pagination).map((Lesson lesson) -> this.lessonMapper.lessonToResponse(lesson));
     }
 
     @Override
     public LessonResponse getById(String id) {
         Lesson lesson = this.lessonRepository.findById(id).orElse(null);
 
-        return this.mapper.lessonToResponse(lesson);
+        return this.lessonMapper.lessonToResponse(lesson);
     }
 
     @Override
     public LessonResponse create(LessonCreateRequest request) {
 
         Lesson lesson = this.lessonMapper.requestCreateToEntity(request, new Lesson());
+        lesson.setAssigments(new ArrayList<Assigment>());
 
         Lesson newLesson = this.lessonRepository.save(lesson);
 
-        return this.mapper.lessonToResponse(newLesson);
+        return this.lessonMapper.lessonToResponse(newLesson);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class LessonService implements ILessonService{
 
         Lesson lessonUpdated = this.lessonRepository.save(lessonUpdate);
 
-        return this.mapper.lessonToResponse(lessonUpdated);
+        return this.lessonMapper.lessonToResponse(lessonUpdated);
     }
 
     @Override

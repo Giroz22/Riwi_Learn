@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonUpdateRequest;
+import com.riwi_learn.Riwi.learn.api.dto.response.AssigmentToLessonResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseToLessonResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.LessonResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.UserBasicResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 
@@ -30,5 +34,24 @@ public class LessonMapper {
         BeanUtils.copyProperties(request, entity);
 
         return entity;
+    }
+
+    public LessonResponse lessonToResponse(Lesson entity){
+        LessonResponse response = Mapper.sourceToTarget(entity, new LessonResponse());
+
+        response.setAssigments(entity.getAssigments().stream().map((assigment)-> Mapper.sourceToTarget(assigment, new AssigmentToLessonResponse())).toList());
+
+        //Find and transfor the info of instructor to its dto response
+        UserBasicResponse instructor = Mapper.sourceToTarget(
+            entity.getCourse().getInstructor(), new UserBasicResponse()
+        );
+    
+        response.setCourse(
+            Mapper.sourceToTarget(
+                entity.getCourse(),CourseToLessonResponse.builder().instructor(instructor).build()
+            )
+        );
+
+        return response;
     }
 }
