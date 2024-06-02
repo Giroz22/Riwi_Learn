@@ -12,25 +12,25 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class UserMapper{
+public class UserMapper implements IMapperBase<User, UserCreateRequest,  UserResponse>{
 
+    @Override   
+    public User requestToEntity(UserCreateRequest request) {
 
-    public User requestCreateToEntity(UserCreateRequest request, User entity) {
-
-        BeanUtils.copyProperties(request, entity);
+        User entity = Mapper.sourceToTarget(request, new User());
 
         return entity;
     }
 
-
-    public User requestUpdateToEntity(UserUpdateRequest request, User entity) {
+    public User requestToEntity(UserUpdateRequest request, User entity) {
 
        BeanUtils.copyProperties(request, entity);
 
         return entity;
     }
 
-    public UserResponse userToResponse(User entity) {
+    @Override
+    public UserResponse entityToResponse(User entity) {
 
         UserResponse response = new UserResponse();
 

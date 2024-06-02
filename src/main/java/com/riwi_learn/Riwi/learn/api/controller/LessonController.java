@@ -5,10 +5,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonUpdateRequest;
+import com.riwi_learn.Riwi.learn.api.dto.response.AssigmentBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.LessonService;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -48,5 +52,11 @@ public class LessonController {
         this.lessonService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/assigments")
+    public ResponseEntity<List<AssigmentBaseResponse>> getMethodName(@PathVariable String id) {
+        return ResponseEntity.ok().body(this.lessonService.getAllAssigments(id));
+    }
+    
         
 }

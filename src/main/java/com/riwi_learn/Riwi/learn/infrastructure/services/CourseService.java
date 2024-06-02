@@ -35,37 +35,37 @@ public class CourseService implements ICourseService{
         if(page < 0 ) page = 0;
         PageRequest pagination = PageRequest.of(page, size);
 
-        return courseRepository.findAll(pagination).map(course ->  this.courseMapper.courseToResponse(course));
+        return courseRepository.findAll(pagination).map(course ->  this.courseMapper.entityToResponse(course));
     }
 
     @Override
     public CourseResponse getById(String id) {
         Course course = this.courseRepository.findById(id).orElse(null);
 
-        return this.courseMapper.courseToResponse(course);
+        return this.courseMapper.entityToResponse(course);
     }
 
     @Override
     public CourseResponse create(CourseCreateRequest request) {
-        Course course = this.courseMapper.requestCreateToEntity(request, new Course());
+        Course course = this.courseMapper.requestToEntity(request);
 
         course.setLesson(new ArrayList<>());
         course.setMessages(new ArrayList<>());
         
         Course courseSaved = this.courseRepository.save(course);
 
-        return this.courseMapper.courseToResponse(courseSaved);
+        return this.courseMapper.entityToResponse(courseSaved);
     }
 
     @Override
     public CourseResponse update(String id, CourseUpdateRequest request) {
         Course course = this.courseRepository.findById(id).orElse(null);
 
-        Course courseUpdate = this.courseMapper.requestUpdateToEntity(request, course);
+        Course courseUpdate = this.courseMapper.requestToEntity(request, course);
 
         Course courseUpdated = this.courseRepository.save(courseUpdate);
 
-        return this.courseMapper.courseToResponse(courseUpdated);
+        return this.courseMapper.entityToResponse(courseUpdated);
     }
 
     @Override

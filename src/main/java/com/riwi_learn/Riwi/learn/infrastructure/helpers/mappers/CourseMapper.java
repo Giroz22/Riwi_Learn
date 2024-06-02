@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class CourseMapper  {
+public class CourseMapper implements IMapperBase<Course, CourseCreateRequest, CourseResponse> {
 
     @Autowired
     LessonMapper lessonMapper;
@@ -28,23 +28,26 @@ public class CourseMapper  {
     @Autowired
     private UserRepository userRepository;
 
-    public Course requestCreateToEntity(CourseCreateRequest request, Course entity) {
+
+    @Override
+    public Course requestToEntity(CourseCreateRequest request) {
         
-        BeanUtils.copyProperties(request, entity);
+        Course entity = Mapper.sourceToTarget(request, new Course());
 
         entity.setInstructor(this.userRepository.findById(request.getInstructor_id()).orElse(null));
 
         return entity;
     }
 
-    public Course requestUpdateToEntity(CourseUpdateRequest request, Course entity) {
+    public Course requestToEntity(CourseUpdateRequest request, Course entity) {
         
         BeanUtils.copyProperties(request, entity);
 
         return entity;
     }
-    
-    public CourseResponse courseToResponse(Course entity) {
+
+    @Override
+    public CourseResponse entityToResponse(Course entity) {
 
         CourseResponse response =  new CourseResponse();
 

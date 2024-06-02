@@ -35,14 +35,14 @@ public class UserService implements IUserService{
 
         PageRequest  pagination = PageRequest.of(page, size);
 
-        return this.userRepository.findAll(pagination).map(entity -> this.UserMapper.userToResponse(entity));
+        return this.userRepository.findAll(pagination).map(entity -> this.UserMapper.entityToResponse(entity));
     }
 
     @Override
     public UserResponse getById(String id) {
         User user = this.userRepository.findById(id).orElse(null);
 
-        UserResponse userResponse = UserMapper.userToResponse(user);
+        UserResponse userResponse = UserMapper.entityToResponse(user);
         return userResponse;
     }
 
@@ -50,7 +50,7 @@ public class UserService implements IUserService{
     public UserResponse create(UserCreateRequest request) {
 
         //Obtenemos la info del request
-        User user = UserMapper.requestCreateToEntity(request, new User());  
+        User user = UserMapper.requestToEntity(request);  
         // Agregamos algunos valor por defecto
         user.setCourses(new ArrayList<Course>());
         user.setMessagesSent(new ArrayList<Message>());
@@ -60,7 +60,7 @@ public class UserService implements IUserService{
         User newUser = this.userRepository.save(user);
 
         //Convertimos el usuario a un response
-        UserResponse userResponse = this.UserMapper.userToResponse(newUser);
+        UserResponse userResponse = this.UserMapper.entityToResponse(newUser);
 
         //Retornamos el valor
         return userResponse;
@@ -71,13 +71,13 @@ public class UserService implements IUserService{
         User user = this.userRepository.findById(id).orElse(null);
 
         //Convertir los datos
-        User userUpdate = this.UserMapper.requestUpdateToEntity(request, user);
+        User userUpdate = this.UserMapper.requestToEntity(request, user);
 
         //Guardar
         User userUpdated = this.userRepository.save(userUpdate);
 
         //Convertir a respueste el objeto
-        UserResponse userResponse = this.UserMapper.userToResponse(userUpdated);
+        UserResponse userResponse = this.UserMapper.entityToResponse(userUpdated);
         return userResponse;
     }
 
