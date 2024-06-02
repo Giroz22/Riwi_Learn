@@ -12,9 +12,11 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Assigment;
 import com.riwi_learn.Riwi.learn.domain.repositories.LessonRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Component
 @AllArgsConstructor
+@NoArgsConstructor
 public class AssigmentMapper implements IMapperBase<Assigment, AssigmentCreateRequest, AssigmentResponse>{
 
     @Autowired

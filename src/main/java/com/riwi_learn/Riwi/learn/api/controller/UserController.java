@@ -5,10 +5,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.UserService;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,5 +60,9 @@ public class UserController {
         this.userService.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
+
+    @GetMapping("/{id}/courses")
+    public ResponseEntity<List<CourseResponse>> getAllCourses(@PathVariable String id) {
+        return ResponseEntity.ok().body(this.userService.getCourses(id));
+    }
 }

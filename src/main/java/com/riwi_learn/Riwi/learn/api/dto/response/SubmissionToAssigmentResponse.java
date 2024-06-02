@@ -16,5 +16,5 @@ public class SubmissionToAssigmentResponse {
     private String content;
     private LocalDate date;
     private double grade;
-    private UserBasicResponse user;
+    private UserBaseResponse user;
 }

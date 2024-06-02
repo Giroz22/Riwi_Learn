@@ -15,6 +15,6 @@ public class LessonResponse {
     private String id;
     private String title;
     private String content;
-    private CourseToLessonResponse course;
+    private CourseBaseResponse course;
     private List<AssigmentToLessonResponse> assigments;
 }

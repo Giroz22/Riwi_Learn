@@ -7,5 +7,4 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, String>{
-    
 }

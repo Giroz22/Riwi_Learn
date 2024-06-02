@@ -1,7 +1,6 @@
 package com.riwi_learn.Riwi.learn.api.dto.request;
 
-import com.riwi_learn.Riwi.learn.domain.entitties.Course;
-import com.riwi_learn.Riwi.learn.domain.entitties.User;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class EnrollmentCreateRequest {
-    private User user;
-    private Course course;
+    private String user_id;
+    private String course_id;
+    private LocalDate date_enrollment;
 }

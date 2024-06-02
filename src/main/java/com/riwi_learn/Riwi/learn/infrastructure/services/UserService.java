@@ -1,6 +1,7 @@
 package com.riwi_learn.Riwi.learn.infrastructure.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,12 +10,16 @@ import org.springframework.stereotype.Service;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
+import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
 import com.riwi_learn.Riwi.learn.domain.entitties.Message;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
+import com.riwi_learn.Riwi.learn.domain.repositories.EnrollmentRepository;
 import com.riwi_learn.Riwi.learn.domain.repositories.UserRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IUserService;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
 
 import lombok.AllArgsConstructor;
@@ -25,9 +30,15 @@ public class UserService implements IUserService{
 
     @Autowired
     public final UserMapper UserMapper;
+    
+    @Autowired
+    public final CourseMapper courseMapper;
 
     @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
 
     @Override
     public Page<UserResponse> getAll(int page, int size) {
@@ -90,4 +101,13 @@ public class UserService implements IUserService{
         this.userRepository.delete(user);        
     }
 
+    public List<CourseResponse> getCourses(String user_id){
+        User user = this.userRepository.findById(user_id).orElse(null);
+
+        List<Enrollment> enrollments = enrollmentRepository.findByUser(user);
+
+        return enrollments.stream().map(
+            enrollment -> courseMapper.entityToResponse(enrollment.getCourse()) 
+        ).toList();
+    }
 }

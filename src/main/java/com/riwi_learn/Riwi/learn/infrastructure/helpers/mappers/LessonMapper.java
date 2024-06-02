@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.AssigmentToLessonResponse;
-import com.riwi_learn.Riwi.learn.api.dto.response.CourseToLessonResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.SubmissionToAssigmentResponse;
-import com.riwi_learn.Riwi.learn.api.dto.response.UserBasicResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.entitties.Submission;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
@@ -60,13 +60,13 @@ public class LessonMapper implements IMapperBase<Lesson, LessonCreateRequest, Le
         ).toList());
 
         //Find and transfor the info of instructor to its dto response
-        UserBasicResponse instructor = Mapper.sourceToTarget(
-            entity.getCourse().getInstructor(), new UserBasicResponse()
+        UserBaseResponse instructor = Mapper.sourceToTarget(
+            entity.getCourse().getInstructor(), new UserBaseResponse()
         );
     
         response.setCourse(
             Mapper.sourceToTarget(
-                entity.getCourse(), CourseToLessonResponse.builder().instructor(instructor).build()
+                entity.getCourse(), CourseBaseResponse.builder().instructor(instructor).build()
             )
         );
 

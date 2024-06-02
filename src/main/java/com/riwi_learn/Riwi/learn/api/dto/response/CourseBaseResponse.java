@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class CourseToLessonResponse {
+public class CourseBaseResponse {
     private String id;
     private String name;
     private String description;
-    private UserBasicResponse instructor; 
+    private UserBaseResponse instructor; 
 }
