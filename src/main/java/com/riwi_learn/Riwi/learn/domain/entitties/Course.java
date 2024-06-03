@@ -36,6 +36,16 @@ public class Course {
     @Lob
     private String description;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(
+        mappedBy = "course",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Enrollment> enrollments;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name = "instructor_id",
@@ -49,7 +59,7 @@ public class Course {
         mappedBy = "course",
         fetch = FetchType.EAGER,
         cascade = CascadeType.ALL,
-        orphanRemoval = false
+        orphanRemoval = true
     )
     private List<Message> messages;
 
@@ -59,7 +69,9 @@ public class Course {
         mappedBy = "course",
         fetch = FetchType.EAGER,
         cascade = CascadeType.ALL,
-        orphanRemoval = false
+        orphanRemoval = true
     )
     private List<Lesson> lesson;
+
+
 }

@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class SubmissionResponse {
+public class AssigmentToSubmissionResponse {
     private String id;
-    private String content;
-    private LocalDate date;
-    private double grade;
-    private UserBaseResponse user;
-    private AssigmentToSubmissionResponse assigment;
+    private String title;
+    private String description;
+    private LocalDate due_date;
+    private LessonBaseResponse lesson;
 }

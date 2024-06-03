@@ -1,8 +1,5 @@
 package com.riwi_learn.Riwi.learn.api.dto.request;
 
-import com.riwi_learn.Riwi.learn.domain.entitties.Assigment;
-import com.riwi_learn.Riwi.learn.domain.entitties.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SubmissionCreateRequest {
     private String content;
-    private double grade;
-    private User user;
-    private Assigment assigment;
+    private String user_id;
+    private String assigment_id;
 }

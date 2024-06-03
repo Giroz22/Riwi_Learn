@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.SubmissionBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
@@ -20,6 +21,7 @@ import com.riwi_learn.Riwi.learn.domain.repositories.EnrollmentRepository;
 import com.riwi_learn.Riwi.learn.domain.repositories.UserRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IUserService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.SubmissionMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,9 @@ public class UserService implements IUserService{
     
     @Autowired
     public final CourseMapper courseMapper;
+
+    @Autowired
+    private final SubmissionMapper submissionMapper;
 
     @Autowired
     private final UserRepository userRepository;
@@ -61,11 +66,14 @@ public class UserService implements IUserService{
     public UserResponse create(UserCreateRequest request) {
 
         //Obtenemos la info del request
-        User user = UserMapper.requestToEntity(request);  
+        User user = UserMapper.requestToEntity(request); 
+
         // Agregamos algunos valor por defecto
         user.setCourses(new ArrayList<Course>());
         user.setMessagesSent(new ArrayList<Message>());
         user.setMessagesReceived(new ArrayList<Message>());
+        user.setEnrollments(new ArrayList<>());
+        user.setSubmissions(new ArrayList<>());
         
         //Guardamos el usuario
         User newUser = this.userRepository.save(user);
@@ -108,6 +116,14 @@ public class UserService implements IUserService{
 
         return enrollments.stream().map(
             enrollment -> courseMapper.entityToBaseResponse(enrollment.getCourse()) 
+        ).toList();
+    }
+
+    public List<SubmissionBaseResponse>  getAllSubmission(String user_id){
+        User user =   this.userRepository.findById(user_id).orElse(null);
+
+        return user.getSubmissions().stream().map(
+            (submission) -> this.submissionMapper.entityToBaseResponse(submission)
         ).toList();
     }
 }

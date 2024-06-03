@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
-import com.riwi_learn.Riwi.learn.api.dto.response.EnrollmentResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;

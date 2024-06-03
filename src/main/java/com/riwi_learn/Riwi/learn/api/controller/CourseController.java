@@ -73,5 +73,7 @@ public class CourseController {
     public ResponseEntity<List<UserBaseResponse>> getUsersInCourse(@PathVariable String id) {
         return ResponseEntity.ok().body(this.courseService.getAllUsersInCourse(id));
     }
+
+    
     
 }

@@ -8,6 +8,7 @@ import com.riwi_learn.Riwi.learn.api.dto.request.LessonCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.LessonUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.AssigmentToLessonResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.SubmissionToAssigmentResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
@@ -71,6 +72,10 @@ public class LessonMapper implements IMapperBase<Lesson, LessonCreateRequest, Le
         );
 
         return response;
+    }
+
+    public LessonBaseResponse entityToBaseResponse(Lesson entity){
+        return Mapper.sourceToTarget(entity, new LessonBaseResponse());
     }
 
     public SubmissionToAssigmentResponse submissionToAssigmentResponse(Submission submission){

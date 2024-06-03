@@ -50,7 +50,7 @@ public class Lesson {
         mappedBy = "lesson",
         fetch = FetchType.EAGER,
         cascade = CascadeType.ALL,
-        orphanRemoval = false
+        orphanRemoval = true
     )
     private List<Assigment> assigments;
 }

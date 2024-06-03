@@ -47,6 +47,16 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(
+        mappedBy = "user",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = false
+    )
+    private List<Enrollment> enrollments;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(
         mappedBy = "instructor",
         fetch = FetchType.EAGER,
         cascade = CascadeType.ALL,
@@ -73,4 +83,14 @@ public class User {
         orphanRemoval = false
     )
     private List<Message> messagesReceived;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(
+        mappedBy = "user",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = false 
+    )
+    private List<Submission> submissions;
 }

@@ -53,7 +53,7 @@ public class Assigment {
         mappedBy = "assigment",
         fetch = FetchType.EAGER,
         cascade = CascadeType.ALL,
-        orphanRemoval = false
+        orphanRemoval = true
     )
     private List<Submission> submissions;
 }
