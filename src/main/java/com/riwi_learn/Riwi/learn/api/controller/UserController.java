@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
-import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.UserService;
 
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/courses")
-    public ResponseEntity<List<CourseResponse>> getAllCourses(@PathVariable String id) {
+    public ResponseEntity<List<CourseBaseResponse>> getAllCourses(@PathVariable String id) {
         return ResponseEntity.ok().body(this.userService.getCourses(id));
     }
 }

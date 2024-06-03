@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
+import com.riwi_learn.Riwi.learn.domain.entitties.Course;
+
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, String>{
     List<Enrollment> findByUser(User user);
+
+    List<Enrollment> findUsersByCourse(Course course);
 }

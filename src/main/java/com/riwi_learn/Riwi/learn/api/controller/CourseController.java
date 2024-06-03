@@ -7,6 +7,7 @@ import com.riwi_learn.Riwi.learn.api.dto.request.CourseCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.CourseService;
 
 import lombok.AllArgsConstructor;
@@ -67,4 +68,10 @@ public class CourseController {
         this.courseService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/users")
+    public ResponseEntity<List<UserBaseResponse>> getUsersInCourse(@PathVariable String id) {
+        return ResponseEntity.ok().body(this.courseService.getAllUsersInCourse(id));
+    }
+    
 }

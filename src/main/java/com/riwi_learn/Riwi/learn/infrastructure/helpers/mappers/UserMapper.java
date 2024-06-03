@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
+import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.User;
 
@@ -35,6 +36,12 @@ public class UserMapper implements IMapperBase<User, UserCreateRequest,  UserRes
         UserResponse response = new UserResponse();
 
         BeanUtils.copyProperties(entity, response);
+
+        return response;
+    }
+
+    public UserBaseResponse entityToBaseResponse(User entity){        
+        UserBaseResponse response = Mapper.sourceToTarget(entity, new UserBaseResponse());
 
         return response;
     }

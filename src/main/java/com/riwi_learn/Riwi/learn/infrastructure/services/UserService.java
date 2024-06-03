@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.riwi_learn.Riwi.learn.api.dto.request.UserCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.UserUpdateRequest;
-import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.CourseBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
@@ -101,13 +101,13 @@ public class UserService implements IUserService{
         this.userRepository.delete(user);        
     }
 
-    public List<CourseResponse> getCourses(String user_id){
+    public List<CourseBaseResponse> getCourses(String user_id){
         User user = this.userRepository.findById(user_id).orElse(null);
 
         List<Enrollment> enrollments = enrollmentRepository.findByUser(user);
 
         return enrollments.stream().map(
-            enrollment -> courseMapper.entityToResponse(enrollment.getCourse()) 
+            enrollment -> courseMapper.entityToBaseResponse(enrollment.getCourse()) 
         ).toList();
     }
 }

@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.EnrollmentResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
+import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
 import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
+import com.riwi_learn.Riwi.learn.domain.repositories.EnrollmentRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ICourseService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
+import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -28,7 +33,13 @@ public class CourseService implements ICourseService{
     private CourseRepository courseRepository;
 
     @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Page<CourseResponse> getAll(int page, int size) {
@@ -82,4 +93,12 @@ public class CourseService implements ICourseService{
         return this.courseMapper.listLessonToResponse(lessons);
     }
 
+    public List<UserBaseResponse> getAllUsersInCourse(String id){
+        Course course = this.courseRepository.findById(id).orElse(null);
+        List<Enrollment> enrollments = this.enrollmentRepository.findUsersByCourse(course);
+
+        return enrollments.stream().map(
+            enrollment -> this.userMapper.entityToBaseResponse(enrollment.getUser())
+        ).toList();
+    }
 }
