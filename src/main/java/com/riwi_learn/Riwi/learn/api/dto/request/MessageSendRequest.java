@@ -1,8 +1,5 @@
 package com.riwi_learn.Riwi.learn.api.dto.request;
 
-import com.riwi_learn.Riwi.learn.domain.entitties.Course;
-import com.riwi_learn.Riwi.learn.domain.entitties.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class MessageCreateRequest {
+public class MessageSendRequest {
     private String content;
-    private User sender;
-    private User receiver;
-    private Course course; 
+    private String sender_id;
+    private String receiver_id;
+    private String course_id; 
 }

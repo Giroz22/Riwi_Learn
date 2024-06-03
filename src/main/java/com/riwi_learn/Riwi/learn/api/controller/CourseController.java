@@ -7,6 +7,8 @@ import com.riwi_learn.Riwi.learn.api.dto.request.CourseCreateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.MessageBaseResponse;
+import com.riwi_learn.Riwi.learn.api.dto.response.MessageResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.CourseService;
 
@@ -74,6 +76,8 @@ public class CourseController {
         return ResponseEntity.ok().body(this.courseService.getAllUsersInCourse(id));
     }
 
-    
-    
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<List<MessageBaseResponse>> getAllMessages(@PathVariable String id) {
+        return ResponseEntity.ok().body(this.courseService.getAllMessages(id));
+    }
 }

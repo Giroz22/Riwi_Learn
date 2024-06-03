@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class MessageResponse { 
+public class MessageBaseResponse { 
     private String id;
     private String content;
     private LocalDate sent_date;
     private UserBaseResponse sender;
     private UserBaseResponse receiver;
-    private CourseBaseResponse course; 
 }

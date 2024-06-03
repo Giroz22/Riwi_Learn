@@ -13,7 +13,6 @@ import com.riwi_learn.Riwi.learn.api.dto.request.AssigmentUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.AssigmentResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.SubmissionBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Assigment;
-import com.riwi_learn.Riwi.learn.domain.entitties.Submission;
 import com.riwi_learn.Riwi.learn.domain.repositories.AssigmentRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IAssigmentService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.AssigmentMapper;
