@@ -19,6 +19,7 @@ import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ILessonService
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.AssigmentMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.LessonMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.Mapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -46,7 +47,7 @@ public class LessonService implements ILessonService{
 
     @Override
     public LessonResponse getById(String id) {
-        Lesson lesson = this.lessonRepository.findById(id).orElse(null);
+        Lesson lesson = this.find(id);
 
         return this.lessonMapper.entityToResponse(lesson);
     }
@@ -64,7 +65,7 @@ public class LessonService implements ILessonService{
 
     @Override
     public LessonResponse update(String id, LessonUpdateRequest request) {
-        Lesson lesson = this.lessonRepository.findById(id).orElse(null);
+        Lesson lesson = this.find(id);
         
         Lesson lessonUpdate = this.lessonMapper.requestToEntity(request,lesson);
 
@@ -75,14 +76,14 @@ public class LessonService implements ILessonService{
 
     @Override
     public void delete(String id) {
-        Lesson lesson = this.lessonRepository.findById(id).orElse(null);
+        Lesson lesson = this.find(id);
 
         this.lessonRepository.delete(lesson);
         return;
     }
 
     public List<AssigmentBaseResponse> getAllAssigments(String id){
-        Lesson lesson = this.lessonRepository.findById(id).orElse(null);
+        Lesson lesson = this.find(id);
 
         return lesson.getAssigments().stream().map(
             (Assigment assigment) -> Mapper.sourceToTarget(
@@ -98,4 +99,7 @@ public class LessonService implements ILessonService{
         ) .toList();
     }
    
+    public Lesson find(String id){
+        return this.lessonRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Lesson"));
+    }
 }

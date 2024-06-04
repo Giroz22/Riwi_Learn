@@ -23,6 +23,7 @@ import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IUserService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.SubmissionMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -56,7 +57,7 @@ public class UserService implements IUserService{
 
     @Override
     public UserResponse getById(String id) {
-        User user = this.userRepository.findById(id).orElse(null);
+        User user = this.find(id);
 
         UserResponse userResponse = UserMapper.entityToResponse(user);
         return userResponse;
@@ -87,7 +88,7 @@ public class UserService implements IUserService{
 
     public UserResponse update(String id, UserUpdateRequest request) {
         //Buscar si existe
-        User user = this.userRepository.findById(id).orElse(null);
+        User user = this.find(id);
 
         //Convertir los datos
         User userUpdate = this.UserMapper.requestToEntity(request, user);
@@ -103,14 +104,14 @@ public class UserService implements IUserService{
     @Override
     public void delete(String id) {
         //Buscar si existe
-        User user = this.userRepository.findById(id).orElse(null);
+        User user = this.find(id);
 
         //Eliminamos        
         this.userRepository.delete(user);        
     }
 
     public List<CourseBaseResponse> getCourses(String user_id){
-        User user = this.userRepository.findById(user_id).orElse(null);
+        User user = this.find(user_id);
 
         List<Enrollment> enrollments = enrollmentRepository.findByUser(user);
 
@@ -120,10 +121,14 @@ public class UserService implements IUserService{
     }
 
     public List<SubmissionBaseResponse>  getAllSubmission(String user_id){
-        User user =   this.userRepository.findById(user_id).orElse(null);
+        User user =   this.find(user_id);
 
         return user.getSubmissions().stream().map(
             (submission) -> this.submissionMapper.entityToBaseResponse(submission)
         ).toList();
+    }
+
+    public User find(String id){
+        return this.userRepository.findById(id).orElseThrow(() -> new IdNotFoundException("User"));
     }
 }

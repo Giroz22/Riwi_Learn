@@ -1,6 +1,5 @@
 package com.riwi_learn.Riwi.learn.infrastructure.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import com.riwi_learn.Riwi.learn.api.dto.request.MessageSendRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.MessageResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Message;
 import com.riwi_learn.Riwi.learn.domain.repositories.MessageRepository;
-import com.riwi_learn.Riwi.learn.domain.repositories.UserRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IMessageService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.MessageMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -23,9 +22,6 @@ public class MessageService implements IMessageService{
 
     @Autowired
     private final MessageRepository messageRepository;
-
-    @Autowired
-    private final UserRepository userRepository;
 
     @Autowired
     private final MessageMapper messageMapper;
@@ -45,5 +41,9 @@ public class MessageService implements IMessageService{
         return listMessage.stream().map(
             (message) -> this.messageMapper.entityToResponse(message)
         ).toList();        
+    }
+      
+    public Message find(String id){
+        return this.messageRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Message"));
     }
 }

@@ -17,6 +17,7 @@ import com.riwi_learn.Riwi.learn.domain.repositories.AssigmentRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IAssigmentService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.AssigmentMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.SubmissionMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 @Component
 public class AssigmentService implements IAssigmentService {
@@ -42,7 +43,7 @@ public class AssigmentService implements IAssigmentService {
 
     @Override
     public AssigmentResponse getById(String id) {
-        Assigment assigment = this.assigmentRepository.findById(id).orElse(null);
+        Assigment assigment = this.find(id);
 
         return this.assigmentMapper.entityToResponse(assigment);
     }
@@ -58,7 +59,7 @@ public class AssigmentService implements IAssigmentService {
     @Override
     public AssigmentResponse update(String id, AssigmentUpdateRequest request) {
         
-        Assigment assigment = this.assigmentRepository.findById(id).orElse(null);
+        Assigment assigment = this.find(id);
 
         Assigment assigmentUpdate = this.assigmentMapper.requestToEntity(request, assigment);
 
@@ -67,16 +68,19 @@ public class AssigmentService implements IAssigmentService {
 
     @Override
     public void delete(String id) {
-        Assigment assigment = this.assigmentRepository.findById(id).orElse(null);
+        Assigment assigment = this.find(id);
         this.assigmentRepository.delete(assigment);
     }
 
     public List<SubmissionBaseResponse> getAllSubmissions(String id){
-        Assigment assigment = this.assigmentRepository.findById(id).orElse(null);
+        Assigment assigment = this.find(id);
 
         return assigment.getSubmissions().stream().map(
             (submission) -> this.submissionMapper.entityToBaseResponse(submission)
         ).toList();
     }
-    
+
+    public Assigment find(String id){
+        return this.assigmentRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Assigment"));
+    }
 }

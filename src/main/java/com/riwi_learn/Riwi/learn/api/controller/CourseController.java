@@ -8,7 +8,6 @@ import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.MessageBaseResponse;
-import com.riwi_learn.Riwi.learn.api.dto.response.MessageResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.infrastructure.services.CourseService;
 

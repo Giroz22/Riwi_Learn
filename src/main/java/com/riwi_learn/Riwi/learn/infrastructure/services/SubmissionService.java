@@ -11,6 +11,7 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Submission;
 import com.riwi_learn.Riwi.learn.domain.repositories.SubmissionRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ISubmissionService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.SubmissionMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class SubmissionService implements ISubmissionService{
 
     @Override
     public SubmissionResponse getById(String id) {
-        Submission submission = this.submissionRepository.findById(id).orElse(null);
+        Submission submission = this.find(id);
 
         return this.submissionMapper.entityToResponse(submission);
     }
@@ -50,7 +51,7 @@ public class SubmissionService implements ISubmissionService{
 
     @Override
     public SubmissionResponse update(String id, SubmissionUpdateRequest entity) {
-        Submission submission = this.submissionRepository.findById(id).orElse(null);
+        Submission submission = this.find(id);
 
         Submission submissionUpdate = this.submissionMapper.requestToEntity(entity, submission);
 
@@ -61,9 +62,13 @@ public class SubmissionService implements ISubmissionService{
 
     @Override
     public void delete(String id) {
-        Submission submission = this.submissionRepository.findById(id).orElse(null);
+        Submission submission = this.find(id);
 
         this.submissionRepository.delete(submission);
+    }
+
+    public Submission find(String id){
+        return this.submissionRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Submission"));
     }
     
 }

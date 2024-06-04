@@ -17,6 +17,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,12 +48,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> add(@RequestBody UserCreateRequest requets) {
+    public ResponseEntity<UserResponse> add(@Validated @RequestBody UserCreateRequest requets) {
         return ResponseEntity.ok().body(this.userService.create(requets));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserUpdateRequest entity) {
+    public ResponseEntity<UserResponse> update(@PathVariable String id, @Validated @RequestBody UserUpdateRequest entity) {
         return ResponseEntity.ok().body(this.userService.update(id, entity));
     }
 
@@ -70,6 +71,5 @@ public class UserController {
     @GetMapping("/{id}/submissions")
     public ResponseEntity<List<SubmissionBaseResponse>> getAllSubmissions(@PathVariable String id) {
         return ResponseEntity.ok().body(this.userService.getAllSubmission(id));
-    }
-    
+    } 
 }

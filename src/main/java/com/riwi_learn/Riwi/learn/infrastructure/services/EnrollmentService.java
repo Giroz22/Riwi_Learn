@@ -11,6 +11,7 @@ import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
 import com.riwi_learn.Riwi.learn.domain.repositories.EnrollmentRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.IEnrollmentService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.EnrollmentMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class EnrollmentService implements IEnrollmentService{
 
     @Override
     public EnrollmentResponse getById(String id) {
-        Enrollment entity = this.enrollmentRepository.findById(id).orElse(null);
+        Enrollment entity = this.find(id);
         
         return this.enrollmentMapper.entityToResponse(entity);
     }
@@ -56,8 +57,14 @@ public class EnrollmentService implements IEnrollmentService{
 
     @Override
     public void delete(String id) {
-        Enrollment entity = this.enrollmentRepository.findById(id).orElse(null);
+        Enrollment entity = this.find(id);
 
         this.enrollmentRepository.delete(entity);
-    }    
+    }   
+    
+    public Enrollment find(String id){
+        return this.enrollmentRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Enrollment"));
+    }
+
+    
 }

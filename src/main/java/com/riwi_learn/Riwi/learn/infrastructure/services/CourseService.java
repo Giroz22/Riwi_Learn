@@ -13,18 +13,17 @@ import com.riwi_learn.Riwi.learn.api.dto.request.CourseUpdateRequest;
 import com.riwi_learn.Riwi.learn.api.dto.response.CourseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.LessonBaseResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.MessageBaseResponse;
-import com.riwi_learn.Riwi.learn.api.dto.response.MessageResponse;
 import com.riwi_learn.Riwi.learn.api.dto.response.UserBaseResponse;
 import com.riwi_learn.Riwi.learn.domain.entitties.Course;
 import com.riwi_learn.Riwi.learn.domain.entitties.Enrollment;
 import com.riwi_learn.Riwi.learn.domain.entitties.Lesson;
-import com.riwi_learn.Riwi.learn.domain.entitties.Message;
 import com.riwi_learn.Riwi.learn.domain.repositories.CourseRepository;
 import com.riwi_learn.Riwi.learn.domain.repositories.EnrollmentRepository;
 import com.riwi_learn.Riwi.learn.infrastructure.abstract_services.ICourseService;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.CourseMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.MessageMapper;
 import com.riwi_learn.Riwi.learn.infrastructure.helpers.mappers.UserMapper;
+import com.riwi_learn.Riwi.learn.util.exceptions.IdNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -57,7 +56,7 @@ public class CourseService implements ICourseService{
 
     @Override
     public CourseResponse getById(String id) {
-        Course course = this.courseRepository.findById(id).orElse(null);
+        Course course = this.find(id);
 
         return this.courseMapper.entityToResponse(course);
     }
@@ -76,7 +75,7 @@ public class CourseService implements ICourseService{
 
     @Override
     public CourseResponse update(String id, CourseUpdateRequest request) {
-        Course course = this.courseRepository.findById(id).orElse(null);
+        Course course = this.find(id);
 
         Course courseUpdate = this.courseMapper.requestToEntity(request, course);
 
@@ -87,7 +86,7 @@ public class CourseService implements ICourseService{
 
     @Override
     public void delete(String id) {
-        Course courseDelete = this.courseRepository.findById(id).orElse(null);
+        Course courseDelete = this.find(id);
 
         this.courseRepository.delete(courseDelete);
     }
@@ -100,7 +99,7 @@ public class CourseService implements ICourseService{
     }
 
     public List<UserBaseResponse> getAllUsersInCourse(String id){
-        Course course = this.courseRepository.findById(id).orElse(null);
+        Course course = this.find(id);
         List<Enrollment> enrollments = this.enrollmentRepository.findUsersByCourse(course);
 
         return enrollments.stream().map(
@@ -108,11 +107,15 @@ public class CourseService implements ICourseService{
         ).toList();
     }
 
-    public List<MessageBaseResponse> getAllMessages(String course_id){
-        Course course = this.courseRepository.findById(course_id).orElse(null);
+    public List<MessageBaseResponse> getAllMessages(String id){
+        Course course = this.find(id);
 
         return course.getMessages().stream().map(
             (message)-> messageMapper.entityToBaseResponse(message)
         ).toList();
+    }
+
+    public Course find(String id){
+        return this.courseRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Course"));
     }
 }
